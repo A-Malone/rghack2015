@@ -8,13 +8,16 @@ from lib import tournament_api
 class Tournament(models.Model):
 
     # Database fields
-    name                    = models.CharField(max_length=200)
-    challonge_tournament_id = models.IntegerField()
-    league_tournament_id    = models.IntegerField()
+    name                        = models.CharField(max_length=200)
+    challonge_tournament_id     = models.IntegerField()
+    league_tournament_id        = models.IntegerField()
+    challonge_tournament_url    = models.CharField(max_length=200)
 
     def setup(self, challonge_settings, lol_settings):
         # Setup with challonge
-        self.challonge_tournament_id = challonge_api.new_tournament(challonge_settings)
+        p = challonge_api.create_tournament(challonge_settings)
+        self.challonge_tournament_id = p["tournament"]["id"]
+        self.challonge_tournament_url = p["tournament"]["url"]
         
         # Setup with league
         self.league_tournament_id = lol.new_tournament(lol_settings)
@@ -30,8 +33,8 @@ class Summoner(models.Model):
         self.suummoner_id = lol.get_summoner_id_for_name(name)
 
 class Team(models.Model):
-    challonge_team_id       = models.IntegerField()    
-    name                    = models.CharField(max_length=100)    
+    challonge_team_id           = models.IntegerField()    
+    name                        = models.CharField(max_length=100)    
 
     # Relationships
     tounament = models.ForeignKey(Tournament)
