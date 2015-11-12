@@ -7,7 +7,7 @@ from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
 
-from models import Tournament, Match, Notification
+from models import Tournament, Match, Notification, Team
 
 from .forms import TournamentForm, TeamForm
 

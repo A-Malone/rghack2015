@@ -43,7 +43,7 @@ class Team(models.Model):
     def __init__(self, name):
         self.name = name
 
-        p = challonge_api.create_participant(tournament.challonge_tournament_id,{"name":name})
+        p = challonge_api.create_participant(self.tournament.challonge_tournament_id,{"name":name})
         self.challonge_team_id = p['participant']['id']
 
     def get_members(self):
