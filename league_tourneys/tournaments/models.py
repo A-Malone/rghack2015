@@ -7,25 +7,34 @@ from lib import challonge, lol
 class Tournament(models.Model):
 
     # Database fields
-    name = models.CharField(max_length=200)
+    name                    = models.CharField(max_length=200)
     challonge_tournament_id = models.IntegerField()
-    league_tournament_id = models.IntegerField()
+    league_tournament_id    = models.IntegerField()
 
     def __init__(self, name, challonge_settings, lol_settings):
         self.name = name
 
         # Setup with challonge
-        self.challonge_tournament_id = challonge.new_tournament(challonge_settings)
+        self.challonge_tournament_id = challonge_api.new_tournament(challonge_settings)
         
         # Setup with league
         self.league_tournament_id = lol.new_tournament(lol_settings)
 
+
 class Team(models.Model):
-    tounament = models.ForeignKey(Tournament)
+    challonge_team_id       = models.IntegerField()    
+    name                    = models.CHarField(max_length=100)    
 
     # Relationships
+    tounament = models.ForeignKey(Tournament)
     summoners = models.ManyToManyField(Summoner)
-     
+
+    def __init__(self, name):
+        self.name = name
+
+        p = challonge_api.create_participant(tournament.challonge_tournament_id,{"name":name})
+        self.challonge_team_id = p['participant']['id']
+
     def get_members(self):
         players =  self.players.split(" ")
         assert(len(players) == 5)
