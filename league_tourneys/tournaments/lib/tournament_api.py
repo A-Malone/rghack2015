@@ -3,7 +3,7 @@ from key_manager import keys
 
 key = keys['riot_games_api_key']
 
-host                = 'http://52.33.251.214'
+host                = 'http://52.33.251.214/notification'
 url_base            = 'https://global.api.pvp.net{0}'
 na_url_base         = 'https://na.api.pvp.net{0}'
 provider_url_base   = url_base.format('/tournament/public/v1/provider')

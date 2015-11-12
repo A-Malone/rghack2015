@@ -67,4 +67,6 @@ class Match(models.Model):
 
 
 class Notification(models.Model):
+    tournament_code = models.TextField(default='')
     json_text = models.TextField()
+

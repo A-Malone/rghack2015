@@ -21,11 +21,12 @@ def notification(request):
     ''' handle the POSTs that come from rito '''
     if request.method == 'POST':
         data = json.loads(request.body)
-    print data
-    pprint.pprint(request.POST.keys())
-    Notification.objects.create(json_text=request.body)
-    print Notification.objects.all()
-    return HttpResponse('post json: ' + pprint.pformat(data))
+        if 'shortCode' in data:
+            Notification.objects.create(tournament_code=data['shortCode'],
+                                        json_text=request.body)
+        pprint.pprint(data)
+        return HttpResponse('Post json: ' + pprint.pformat(data))
+    return HttpResponse('only POST requests pls rito')
 
 
 # TOURNAMENT CONTROLLER
