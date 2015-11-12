@@ -24,5 +24,6 @@ urlpatterns = [
     url(r'^tournaments/', include(tournaments_urls)),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^notification', views.notification, name='notification'),
+    url(r'^accounts/', include('registration.backends.simple.urls')),
     ]
 
