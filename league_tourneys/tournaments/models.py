@@ -13,24 +13,24 @@ class Tournament(models.Model):
     league_tournament_id        = models.IntegerField()
     challonge_tournament_url    = models.CharField(max_length=200)
 
-    def setup(self, challonge_settings, lol_settings):
+    def setup(self, challonge_settings):
         # Setup with challonge
-        p = challonge_api.create_tournament(challonge_settings)
+        p = challonge_api.create_tournament(challonge_settings)        
+
         self.challonge_tournament_id = p["tournament"]["id"]
         self.challonge_tournament_url = p["tournament"]["url"]
         
         # Setup with league
-        self.league_tournament_id = lol.new_tournament(lol_settings)
-
+        #self.league_tournament_id = tournament_api.new_tournament()
+        self.league_tournament_id = -1
 
 class Summoner(models.Model):
     summoner_id = models.IntegerField()
     summoner_name = models.CharField(max_length=100)
     region_id = models.IntegerField()   #Ignore this for now as we're assuming NA
     
-    def __init__(self, name):
-        summoner_name = name
-        self.suummoner_id = lol.get_summoner_id_for_name(name)
+    def setup(self):        
+        self.summoner_id = tournament_api.get_summoner_id_for_name(self.summoner_name)
 
 class Team(models.Model):
     challonge_team_id           = models.IntegerField()    
@@ -51,24 +51,20 @@ class Team(models.Model):
         assert(len(players) == 5)
         return players
 
-class Match(models.Model):
-    teams = models.TextField(max_length=200)
-    lol_match_id = models.IntegerField()
+class Match(models.Model):    
+    tournament_api_match_id = models.IntegerField()
 
     # Relationships
     teams = models.ManyToManyField(Team)
     tounament = models.ForeignKey(Tournament)
 
     def __init__(self):
-        self.lol_match_id = -1
+        self.tournament_api_match_id = -1
 
     def create_match(self):
         """ Lazy loading of matches on call """
-        self.lol_match_id = lol.get_tournament_code()
+        self.tournament_api_match_id = tournament_api.get_tournament_code()
 
 
 class Notification(models.Model):
     json_text = models.TextField()
-
-
-
