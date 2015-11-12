@@ -40,6 +40,6 @@ def create_match(tournament_id, num_matches):
     return r.text
 
 # Sample going from beginning to end
-new_p_id = register_new_provider('Tweeks')
-t_id = create_tournament('test-tourney', new_p_id)
-m_idcreate_match(t_id, 1)
+#new_p_id = register_new_provider('Tweeks')
+#t_id = create_tournament('test-tourney', new_p_id)
+#m_idcreate_match(t_id, 1)
