@@ -7,3 +7,5 @@ eggs
 parts
 src/*.egg-info
 db.sqlite3  
+**/*.pyc
+

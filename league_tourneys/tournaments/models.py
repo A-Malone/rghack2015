@@ -1,6 +1,7 @@
 from django.db import models
 
-from lib import challonge, lol
+from lib import challonge
+from lib import tournament_api
 
 # Create your models here.
 
@@ -20,6 +21,14 @@ class Tournament(models.Model):
         # Setup with league
         self.league_tournament_id = lol.new_tournament(lol_settings)
 
+class Summoner(models.Model):
+    summoner_id = models.IntegerField()
+    summoner_name = models.CharField(max_length=100)
+    region_id = models.IntegerField()   #Ignore this for now as we're assuming NA
+    
+    def __init__(self, name):
+        summoner_name = name
+        self.suummoner_id = lol.get_summoner_id_for_name(name)
 
 class Team(models.Model):
     challonge_team_id       = models.IntegerField()    
@@ -55,13 +64,5 @@ class Match(models.Model):
         """ Lazy loading of matches on call """
         self.lol_match_id = lol.get_tournament_code()
 
-class Summoner(models.Model):
-    summoner_id = models.IntegerField()
-    summoner_name = models.CharField(max_length=100)
-    region_id = models.IntegerField()   #Ignore this for now as we're assuming NA
-    
-    def __init__(self, name):
-        summoner_name = name
-        self.suummoner_id = lol.get_summoner_id_for_name(name)
 
 
