@@ -1,3 +1,4 @@
 {
-	"challonge_api_key":"pTv74mj3l3uy17tuCeN2NeV2biUYiURVaq1E18Rc"
+	"challonge_api_key":"pTv74mj3l3uy17tuCeN2NeV2biUYiURVaq1E18Rc",
+    "riot_games_api_key":"0b1b9388-2df5-4d67-8f6b-0596fb20c151"
 }

@@ -1,17 +1,13 @@
 import requests
+from key_manager import keys
 
-key_file = 'api_key.txt'
+key = keys['riot_games_api_key']
 
 host = 'http://52.33.251.214'
 t_url_base = 'https://global.api.pvp.net{0}'
 provider_url_base = t_url_base.format('/tournament/public/v1/provider')
 tournament_url_base = t_url_base.format('/tournament/public/v1/tournament')
 code_url_base = t_url_base.format('/tournament/public/v1/code')
-
-key = ''
-with open('api_key.txt', 'r') as f:
-    key = f.read().rstrip()
-header = {'X-Riot-Token': key, 'Content-Type': 'application/json'}
 
 def register_new_provider(provider_account):
     json_data = {'region': 'NA', 'url': host}

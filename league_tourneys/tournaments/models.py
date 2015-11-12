@@ -1,6 +1,6 @@
 from django.db import models
 
-from lib import challonge
+from lib import challonge_api
 from lib import tournament_api
 
 # Create your models here.
@@ -12,14 +12,13 @@ class Tournament(models.Model):
     challonge_tournament_id = models.IntegerField()
     league_tournament_id    = models.IntegerField()
 
-    def __init__(self, name, challonge_settings, lol_settings):
-        self.name = name
-
+    def setup(self, challonge_settings, lol_settings):
         # Setup with challonge
         self.challonge_tournament_id = challonge_api.new_tournament(challonge_settings)
         
         # Setup with league
         self.league_tournament_id = lol.new_tournament(lol_settings)
+
 
 class Summoner(models.Model):
     summoner_id = models.IntegerField()
@@ -32,7 +31,7 @@ class Summoner(models.Model):
 
 class Team(models.Model):
     challonge_team_id       = models.IntegerField()    
-    name                    = models.CHarField(max_length=100)    
+    name                    = models.CharField(max_length=100)    
 
     # Relationships
     tounament = models.ForeignKey(Tournament)

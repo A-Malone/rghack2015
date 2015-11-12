@@ -1,10 +1,7 @@
 import requests
-import json
+from key_manager import keys
 
-with open('api_key.txt') as data_file:    
-    data = json.load(data_file)
-
-api_key = data['challonge_api_key']
+api_key = keys['challonge_api_key']
 
 '''http://api.challonge.com/v1/documents/tournaments/create'''
 def create_tournament(tournament={}):
@@ -60,43 +57,48 @@ def update_match(tournament_id, match_id, match={}):
 	data = {'match':match}
 	r = requests.put('https://api.challonge.com/v1/tournaments/{}/matches/{}.json'.format(tournament_id, match_id), json=data)
 
-# Create tournament
-tournament = {'name':'API Tournament 1',
-	#'tournament_type':'single elimination',
-    'url':'API_t_1',
-	'description':'a description',
-	'open_signup':'false',
-	'ranked_by':'match wins',
-	'hide_forum':'true',
-	'private':'true',
-	'signup_cap':'10'};
-c = create_tournament(tournament)
-print(c)
-t_id = c['tournament']['id'];
+def main():		
+	# Create tournament
+	tournament = {'name':'API Tournament 1',
+		#'tournament_type':'single elimination',
+	    'url':'API_t_1',
+		'description':'a description',
+		'open_signup':'false',
+		'ranked_by':'match wins',
+		'hide_forum':'true',
+		'private':'true',
+		'signup_cap':'10'};
+	c = create_tournament(tournament)
+	print(c)
+	t_id = c['tournament']['id'];
 
-# Create participants (loop this k)
-participant = {'name':'participant A'}
-p = create_participant(t_id, participant)
-print(p)
-participant = {'name':'participant B'}
-p = create_participant(t_id, participant)
-print(p)
+	# Create participants (loop this k)
+	participant = {'name':'participant A'}
+	p = create_participant(t_id, participant)
+	print(p)
+	participant = {'name':'participant B'}
+	p = create_participant(t_id, participant)
+	print(p)
 
-# Randomize seeds
-r = randomize_seeds(t_id)
-print(r)
+	# Randomize seeds
+	r = randomize_seeds(t_id)
+	print(r)
 
-# Start tournament
-s = start_tournament(t_id)
-print(s)
+	# Start tournament
+	s = start_tournament(t_id)
+	print(s)
 
-# Check matches
-ml = get_match_list(t_id)
-print(ml)
+	# Check matches
+	ml = get_match_list(t_id)
+	print(ml)
 
-# Win the match
-match = {"scores_csv":"1-0","winner_id":p['participant']['id']};
-u = update_match(t_id, ml[0], match)
+	# Win the match
+	match = {"scores_csv":"1-0","winner_id":p['participant']['id']};
+	u = update_match(t_id, ml[0], match)
 
-# End the tournament
-finalize_tournament(t_id)
+	# End the tournament
+	finalize_tournament(t_id)
+
+
+if __name__ == '__main__':
+	main()
