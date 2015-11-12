@@ -1,0 +1,3 @@
+{
+	"challonge_api_key":"pTv74mj3l3uy17tuCeN2NeV2biUYiURVaq1E18Rc"
+}
