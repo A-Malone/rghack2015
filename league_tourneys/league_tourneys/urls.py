@@ -17,8 +17,10 @@ from django.conf.urls import include, url
 from django.contrib import admin
 
 from tournaments import views
+from tournaments import urls as tournaments_urls
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
+    url(r'^tournaments/', include(tournaments_urls),
     url(r'^admin/', include(admin.site.urls)),
 ]
