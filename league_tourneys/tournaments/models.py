@@ -8,14 +8,14 @@ from lib import tournament_api
 class Tournament(models.Model):
 
     # Database fields
-    name                        = models.CharField(max_length=200)
-    challonge_tournament_id     = models.IntegerField()
+    name                        = models.CharField(max_length=200)    
     league_tournament_id        = models.IntegerField()
-    challonge_tournament_url    = models.CharField(max_length=200)
+    challonge_tournament_id     = models.IntegerField(null=True)
+    challonge_tournament_url    = models.CharField(max_length=200, null=True)
 
     def setup(self, challonge_settings):
         # Setup with challonge
-        p = challonge_api.create_tournament(challonge_settings)        
+        p = challonge_api.create_tournament(challonge_settings)
 
         self.challonge_tournament_id = p["tournament"]["id"]
         self.challonge_tournament_url = p["tournament"]["url"]
@@ -24,39 +24,42 @@ class Tournament(models.Model):
         #self.league_tournament_id = tournament_api.new_tournament()
         self.league_tournament_id = -1
 
+    def __repr__(self):
+        return "Tournament: {}".format(self.name)
+
 class Summoner(models.Model):
     summoner_id = models.IntegerField()
     summoner_name = models.CharField(max_length=100)
     region_id = models.IntegerField()   #Ignore this for now as we're assuming NA
     
-    def setup(self):        
+    def __init__(self, *args, **kwargs):
+        super(Summoner, self).__init__(self, *args, **kwargs)
         self.summoner_id = tournament_api.get_summoner_id_for_name(self.summoner_name)
+
+    def __repr__(self):
+        return "Summoner: {}".format(self.summoner_name)
 
 class Team(models.Model):
     challonge_team_id           = models.IntegerField()    
     name                        = models.CharField(max_length=100)    
-
     # Relationships
-    tounament = models.ForeignKey(Tournament)
-    summoners = models.ManyToManyField(Summoner)
+    tournament                  = models.ForeignKey(Tournament)
+    summoners                   = models.ManyToManyField(Summoner)
 
-    def __init__(self, name):
-        self.name = name
+    def __init__(self, *args, **kwargs):
+        super(Team, self).__init__(self, *args, **kwargs)
+        
+        p = challonge_api.create_participant(self.tournament.challonge_tournament_id, {"name":self.name, "misc":self.pk})
+        self.challonge_team_id = p["participant"]["id"]
 
-        p = challonge_api.create_participant(self.tournament.challonge_tournament_id,{"name":name})
-        self.challonge_team_id = p['participant']['id']
-
-    def get_members(self):
-        players =  self.players.split(" ")
-        assert(len(players) == 5)
-        return players
-
-class Match(models.Model):    
-    tournament_api_match_id = models.IntegerField()
-
+    def __repr__(self):
+        return "Team: {}".format(self.name)
+    
+class Match(models.Model):
+    tournament_api_match_id     = models.IntegerField()
     # Relationships
-    teams = models.ManyToManyField(Team)
-    tounament = models.ForeignKey(Tournament)
+    teams                       = models.ManyToManyField(Team)
+    tournament                  = models.ForeignKey(Tournament)
 
     def __init__(self):
         self.tournament_api_match_id = -1
@@ -65,6 +68,8 @@ class Match(models.Model):
         """ Lazy loading of matches on call """
         self.tournament_api_match_id = tournament_api.get_tournament_code()
 
+    def __repr__(self):
+        return "Match: {}".format(self.tournament_api_match_id)
 
 class Notification(models.Model):
     tournament_code = models.TextField(default='')

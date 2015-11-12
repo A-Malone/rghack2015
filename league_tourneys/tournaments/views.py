@@ -7,7 +7,7 @@ from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
 
-from models import Tournament, Match, Notification, Team
+from models import Tournament, Match, Notification, Team, Summoner
 
 from .forms import TournamentForm, TeamForm
 
@@ -40,8 +40,7 @@ def create_tournament(request):
         # create a form instance and populate it with data from the request:
         form = TournamentForm(request.POST)
         # check whether it"s valid:
-        if form.is_valid():
-            
+        if form.is_valid():            
             tournament = Tournament(name=form.cleaned_data["name"])            
             tournament.setup(dat)
             tournament.save()
@@ -65,20 +64,12 @@ def create_team(request, tournament_id):
         form = TeamForm(request.POST)
         # check whether it"s valid:
         if form.is_valid():
-            team = Team(name=form.cleaned_data["name"])
-
-            participant = {}
-            participant["name"] = team.name
-            participant["misc"] = team.id
-            p = challonge_api.create_participant(tournament.challonge_tournament_id, participant)
-
-            team.challonge_team_id = p["participant"]["id"]
+            print(type(form.cleaned_data["name"]))
+            team = tournament.team_set.create(name=form.cleaned_data["name"].encode('utf-8'))
             
             for player_name in form.cleaned_data["members"]:
                 summoner = Summoner.objects.get_or_create(summoner_name=player_name)
-                team.summoners.add(summoner)
-
-            tournament.teams.add(team)
+                team.summoner_set.add(summoner)
                         
             return render(request, "team/detail.html", {"team": team})
     
