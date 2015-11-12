@@ -10,8 +10,8 @@ def index(request):
 
 class TournamentDetailView(generic.DetailView):
     model = Tournament
-    template_name = 'templates/tournament/detail.html'
+    template_name = 'tournament/detail.html'
 
 class MatchDetailView(generic.DetailView):
     model = Match
-    template_name = 'templates/match/detail.html'
+    template_name = 'match/detail.html'
