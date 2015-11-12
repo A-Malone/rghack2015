@@ -17,23 +17,30 @@ lobby_events_base   = url_base.format('/tournament/public/v1/lobby/events/by-cod
 header = {'X-Riot-Token': key, 'Content-Type': 'application/json'}
 header_no_token = {'Content-Type': 'application/json'}
 
-def register_new_provider(provider_account):
+def register_new_provider():
     json_data = {'region': 'NA', 'url': host}
     r = requests.post(provider_url_base, headers=header, json=json_data)
 
     return r.text
 
-def create_tournament(name, provider_id):
+provider_id = register_new_provider()
+
+def create_tournament(name):
     json_data = {'name': name, 'providerId': provider_id}
     r = requests.post(tournament_url_base, headers=header, json=json_data)
 
     return r.text
 
-def create_match(tournament_id, num_matches=1, participants=[0], metadata=''):
+def create_match(tournament_id, num_matches=1, allowed_names=None, metadata=''):
+    allowed_ids = []
+    for name in allowed_names:
+        allowed_ids.append(summoner_name_to_id(name))
+    print allowed_ids
+
     params = {'tournamentId': tournament_id, 'count': num_matches}
     json_data = {
-            'teamSize': 5,
-            'participants': participants,
+            'teamSize': len(allowed_ids)/2,
+            'allowedSummonerIds': {'participants': allowed_ids},
             'spectatorType': 'ALL',
             'pickType': 'TOURNAMENT_DRAFT',
             'mapType': 'SUMMONERS_RIFT',
@@ -41,6 +48,7 @@ def create_match(tournament_id, num_matches=1, participants=[0], metadata=''):
             }
     r = requests.post(code_url_base, headers=header, params=params,
             json=json_data)
+
     return r.json()[0]
 
 '''Returns summoner name to id. If name does not exist, returns -1'''
@@ -127,7 +135,7 @@ def main():
     # just for now
     t_id = 1795
     m_id = 'NA0416f-9b623988-bf60-4a3c-a832-1ce1d0427a65'
-    #m_id = create_match(t_id, 1)
+    m_id = create_match(t_id, 1, allowed_names=['Tweeks', 'Teh Crust'])
     print(m_id)
 
     summoner_name_to_id('ShadowLight2143')
