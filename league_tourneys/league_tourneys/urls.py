@@ -21,7 +21,7 @@ from tournaments import urls as tournaments_urls
 
 urlpatterns = [
     url(r'^$', views.index, name='index'),
-    url(r'^tournaments/', include(tournaments_urls),
+    url(r'^tournaments/', include(tournaments_urls)),
     url(r'^admin/', include(admin.site.urls))
-]
+    ]
 
