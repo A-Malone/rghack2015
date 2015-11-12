@@ -67,4 +67,8 @@ class Match(models.Model):
         self.lol_match_id = lol.get_tournament_code()
 
 
+class Notification(models.Model):
+    json_text = models.TextField()
+
+
 
