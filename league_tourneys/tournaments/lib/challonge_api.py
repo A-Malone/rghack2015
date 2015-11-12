@@ -10,7 +10,7 @@ def create_tournament(tournament={}):
 	return r.json()
 
 '''http://api.challonge.com/v1/documents/tournaments/show'''
-def show_tournament(tournament_id, include_participants=False, include_matches=False):
+def show_tournament(tournament_id):
 	data = {'api_key':api_key}
 	r = requests.get('https://api.challonge.com/v1/tournaments/{}.json'.format(tournament_id), params=data)
 	return r.json()
@@ -60,8 +60,8 @@ def update_match(tournament_id, match_id, match={}):
 def main():		
 	# Create tournament
 	tournament = {'name':'API Tournament 1',
-		#'tournament_type':'single elimination',
-	    'url':'API_t_1',
+		'tournament_type':'double elimination',
+	    'url':'API_t_4',
 		'description':'a description',
 		'open_signup':'false',
 		'ranked_by':'match wins',
@@ -89,7 +89,7 @@ def main():
 	print(s)
 
 	# Check matches
-	ml = get_match_list(t_id)
+	ml = get_match_list(t_id, state='open')
 	print(ml)
 
 	# Win the match

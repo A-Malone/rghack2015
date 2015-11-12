@@ -1,3 +1,22 @@
 <h1>{{ tournament.name }}</h1>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js" />
+<script>
+var get_tournament_bracket = function(url) {
+    var success = function(data) {
+        var html = $.parseHTML(data.contents);
+        console.log(html);
+        $('body').append(html);
 
-<iframe src="http://challonge.com/{{ tournament.challonge_tournament_url }}/module" width="100%" height="500" frameborder="0" scrolling="auto" allowtransparency="true"></iframe>
+        // Get the matches
+        $('table.match_table:not(:has(.blank_id)) td.core').each(function(index, elem) {
+            var children = $(this).children().detach();
+            var $a = $('<a>').attr('href', '#').append(children);
+            $(this).append($a);
+        });
+    }
+    $.get("//alloworigin.com/get?url=http://challonge.com/" + url + "/module", success);
+}
+
+$('body').empty();
+get_tournament_bracket('API_t_4');
+</script>
