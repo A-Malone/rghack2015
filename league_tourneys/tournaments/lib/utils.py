@@ -63,3 +63,5 @@ def get_team_info(tournament_code, team_id=100):
 
     team_info['player_info'] = player_info_list
     return team_info
+
+def get_game_info(tournament_code
