@@ -79,18 +79,18 @@ def start_tournament(request, tournament_id):
     
     return redirect('tournament', pk=tournament_id)
 
+@login_required
 def create_tournament(request):
     # if this is a POST request we need to process the form data
     if request.method == "POST":
         # create a form instance and populate it with data from the request:
         form = TournamentForm(request.POST)
         # check whether it"s valid:
-        if form.is_valid():            
-            tournament = Tournament(name=form.cleaned_data["name"])            
+        if form.is_valid():
+            tournament = Tournament(name=form.cleaned_data["name"])
             tournament.setup(form.cleaned_data)
             tournament.save()
             return render(request, "tournament/detail.html", {"tournament": tournament})
-    
     else:
         form = TournamentForm()
     return render(request, "tournament/create.html", {"form": form, "action":reverse("create_tournament")})
