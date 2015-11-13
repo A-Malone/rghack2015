@@ -1,12 +1,20 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div id="title"><h2 class="app-title">TOURNAMENTS<h2></div>
+<div id="title"><h2 class="app-title">CREATE A TOURNAMENT<h2></div>
 <div class="jumbotron">
 <form action="{{ action }}" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" />
+    {% for field in form %}
+<fieldset class="form-group">
+  <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+    <div class="create-form">
+      <!-- using css to set child elements in above div to style -->
+      {{ field }}
+    </div>
+</fieldset>
+{% endfor %}
+    <input type="submit" class="btn btn-default" value="Submit" />
 </form>
 </div>
 {% endblock %}
