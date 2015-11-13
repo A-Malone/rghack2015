@@ -109,7 +109,7 @@ def match_detail_view(request, tournament_id, match_id):
     tournament = Tournament.objects.get(pk=int(tournament_id))
     match = tournament.match_set.filter(pk=int(match_id)).first()
 
-    teams = match.teams.all()   
+    teams = match.teams.all()
 
     context = {'match':match, 'team1':teams.first(),'team2':teams.last(), 'players1':teams.first().summoners.all(), 'players2':teams.last().summoners.all()}
     
