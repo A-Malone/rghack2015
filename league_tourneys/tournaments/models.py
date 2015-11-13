@@ -49,9 +49,11 @@ class Tournament(models.Model):
         return "Tournament: {}".format(self.name)
 
 class Summoner(models.Model):
-    summoner_id = models.IntegerField()
-    summoner_name = models.CharField(max_length=100)
-    region_id = models.IntegerField()   #Ignore this for now as we're assuming NA
+    summoner_id         = models.IntegerField()
+    summoner_name       = models.CharField(max_length=100)
+    region_id           = models.IntegerField()   #Ignore this for now as we're assuming NA
+    summoner_icon       = models.IntegerField(default=1)
+    league              = models.CharField(max_length=50, default="")
 
     @classmethod
     def find_or_create(cls, name):        
@@ -60,7 +62,14 @@ class Summoner(models.Model):
             return summoners.first()
 
         summoner_id = tournament_api.summoner_name_to_id(name)
-        summoner = Summoner(summoner_name=name, summoner_id=summoner_id, region_id=0)
+
+        p = tournament_api.get_summoner_info(name)
+        icon = int(p["profileIconId"])
+        
+        p = tournament_api.get_summoner_league(summoner_id)
+        league = p[0]["tier"]
+
+        summoner = Summoner(summoner_name=name, summoner_id=summoner_id, region_id=0, league=league, icon=icon)
         summoner.save()
         return summoner
     

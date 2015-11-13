@@ -91,7 +91,7 @@
                     <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/{{ player.summoner_icon }}.png ');" class="summoner-icon"> </div>
                     <span>{{ player.summoner_name }}</span>
                 </div>
-                <span class="division">Challenjour</span>
+                <span class="division">{{ player.league }}</span>
             </div>
             {% endfor %}            
         </div>
@@ -103,7 +103,7 @@
                     <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/{{ player.summoner_icon }}.png ');" class="summoner-icon"> </div>
                     <span>{{ player.summoner_name }}</span>
                 </div>
-                <span class="division">Challenged</span>
+                <span class="division">{{ player.league }}</span>
             </div>
             {% endfor %}
         </div>
