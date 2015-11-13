@@ -105,3 +105,4 @@ STATIC_URL = '/static/'
 
 # registion stuff
 LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = '/'

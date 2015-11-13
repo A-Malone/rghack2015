@@ -1,11 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 <h1>{{ tournament.name }}</h1>
+<form action="{% url 'start_tournament' tournament.pk %}" method="post">
+    {% csrf_token %}
+    <button type="submit" name="your_name" value="your_value">Start</button>
+</form>
+<div id="thebooty"></div>
+
 <script src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 var get_tournament_bracket = function(url) {
     var success = function(data) {
         var html = $.parseHTML(data.contents);
         console.log(html);
-        $('body').append(html);
+        $('#thebooty').append(html);
 
         // Get the matches
         $('table.match_table:not(:has(.blank_id)) td.core').each(function(index, elem) {
@@ -19,3 +29,4 @@ var get_tournament_bracket = function(url) {
 
 get_tournament_bracket('{{ tournament.challonge_tournament_url }}');
 </script>
+{% endblock %}
