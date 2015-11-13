@@ -1,3 +1,7 @@
+{% extends "base.html" %}
+
+{% block content %}
+
 <h1>{{ tournament.name }}</h1>
 <form action="{% url 'start_tournament' tournament.pk %}" method="post">
     {% csrf_token %}
@@ -25,3 +29,4 @@ var get_tournament_bracket = function(url) {
 
 get_tournament_bracket('{{ tournament.challonge_tournament_url }}');
 </script>
+{% endblock %}
