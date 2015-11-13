@@ -23,8 +23,7 @@ class Tournament(models.Model):
         self.challonge_tournament_url = p["tournament"]["url"]
         
         # Setup with league
-        #self.league_tournament_id = tournament_api.new_tournament()
-        self.league_tournament_id = -1
+        self.league_tournament_id = tournament_api.create_tournament(self.name)        
 
     def __repr__(self):
         return "Tournament: {}".format(self.name)
@@ -72,17 +71,33 @@ class Team(models.Model):
     
 class Match(models.Model):
     tournament_api_match_id     = models.IntegerField()
+    challonge_match_id          = models.IntegerField()
+    first_team_id               = models.IntegerField()         #First team in challonge
     # Relationships
     teams                       = models.ManyToManyField(Team)
     tournament                  = models.ForeignKey(Tournament)
 
-    def __init__(self):
-        self.tournament_api_match_id = -1
+    @classmethod
+    def create(cls, tournament_id, challonge_match_id, team_1, team_2):
+        match = Match(challonge_match_id=challonge_match_id)                
+        
+        # Add teams
+        first_team = Team.objects.get(challonge_team_id=team_1)
+        first_team_id = first_team.pk
 
-    def create_match(self):
-        """ Lazy loading of matches on call """
-        self.tournament_api_match_id = tournament_api.get_tournament_code()
+        match.teams.add(first_team)
+        match.teams.add(Team.objects.get(challonge_team_id=team_2))        
 
+        summ_ids = []
+        for team in match.teams:
+            for player in team:
+                summ_ids.append(player.summoner_id)
+
+        # Create the match
+        match.tournament_api_match_id = int(tournament_api.create_match(tournament_id, allowed_names=summ_ids))
+
+        return match
+    
     def __repr__(self):
         return "Match: {}".format(self.tournament_api_match_id)
 
