@@ -74,8 +74,10 @@ def start_tournament(request, tournament_id):
             player1_id = match_json["match"]["player1_id"]
             player2_id = match_json["match"]["player2_id"]
 
-            match = Match.create(tournament_id, challonge_match_id, player1_id, player2_id)
+            match = Match.create(tournament, challonge_match_id, player1_id, player2_id)            
             tournament.match_set.add(match)
+            print(match)
+
     
     return redirect('tournament', pk=tournament_id)
 
@@ -117,11 +119,10 @@ def create_team(request, tournament_id):
             team = Team.create(form.cleaned_data["name"], tournament)
 
             for player_name in form.cleaned_data["members"].split(","):
-
                 summoner = Summoner.find_or_create(player_name)
                 team.summoners.add(summoner)
                         
-            return render(request, "team/detail.html", {"team": team})
+            return redirect('tournament', pk=tournament_id)
     
     else:
         form = TeamForm()
