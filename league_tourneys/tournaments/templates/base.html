@@ -15,6 +15,7 @@
 </head>
 
 <body>
+  <div id="background">
     {% block header %}
     <div id="header">
       <div align=right class="header-content">
@@ -33,7 +34,7 @@
     {% endblock %}
 
     <div id="content">
-      <img src="{% static 'img/index_bg.jpg' %}" id="bg">
+      <!--<img src="{% static 'img/index_bg.jpg' %}" id="bg">-->
       <div class="container height-full">
 	{% block content %}
 	{% endblock %}
@@ -44,7 +45,8 @@
     {% block footer %}
         <hr />
     {% endblock %}
-    </div>
+  </div>
+</div>
 </body>
 
 </html>
