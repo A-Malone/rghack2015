@@ -14,11 +14,16 @@ class Tournament(models.Model):
     challonge_tournament_id     = models.IntegerField(null=True)
     challonge_tournament_url    = models.CharField(max_length=200, null=True)
     started                     = models.BooleanField(default=False)
+    desc                        = models.TextField(max_length=400, default="")
+    num_entries                 = models.IntegerField(default=0)
 
     def setup(self, challonge_settings):
-        # Setup with challonge
-        challonge_settings.pop("tournament_type")
-        p = challonge_api.create_tournament(challonge_settings)        
+        # Setup with challonge        
+        challonge_settings["tournament_type"] = challonge_settings["tournament_type"][0]
+        self.num_entries =  int(challonge_settings.get("signup_cap", 0))
+        self.desc =  challonge_settings.get("description", "")
+
+        p = challonge_api.create_tournament(challonge_settings)
 
         self.challonge_tournament_id = p["tournament"]["id"]
         self.challonge_tournament_url = p["tournament"]["url"]

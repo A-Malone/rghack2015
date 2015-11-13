@@ -7,6 +7,7 @@
 {% endblock %}
 {% block content %}
 <h2 class="app-title" style="text-transform: uppercase;">{{ tournament.name }}</h2>
+<h4 class="app-title" style="text-transform: uppercase;">{{ tournament.desc }}</h4>
 <div class="jumbotron">
   <div style="display: inline-block;">
       <form action="{% url 'start_tournament' tournament.pk %}" method="post">
