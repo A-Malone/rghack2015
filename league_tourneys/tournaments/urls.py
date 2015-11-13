@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^(?P<tournament_id>[0-9]+)/start_tournament/$', views.start_tournament, name='start_tournament'),
     url(r'^(?P<tournament_id>[0-9]+)/matches/(?P<match_id>[0-9]+)/$', views.match_detail_view, name='match_details'),
     url(r'^/notification', views.notification, name='notification')
+    url(r'^list', views.list, name='list'),
 ]

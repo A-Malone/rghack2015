@@ -1,0 +1,61 @@
+#bg {
+  -webkit-filter: brightness(30%);
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  z-index: -1;
+	
+  /* Preserve aspet ratio */
+  min-width: 80%;
+  min-height: 80%;
+}
+
+.height-full {
+  height: 100vh;
+}
+
+.vertical-center {
+  min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+  min-height: 100vh; /* These two lines are counted as one :-)       */
+
+  display: flex;
+  align-items: center;
+  horizontal-align
+}
+
+.v-offset {
+  padding-bottom: 300px;
+}
+
+.width-full {
+  width: 100%;
+}
+
+.h-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.h-left {
+  align: left;
+}
+
+.btn-main {
+  margin-right: 30px;
+  margin-left: 30px;
+}
+
+.btn-bar {
+  height: 200px;
+}
+
+.hover{
+  -moz-box-shadow: 0px 0px 10px #000;
+  -webkit-box-shadow: 0px 0px 10px #000;
+  box-shadow: 0px 0px 10px #000;
+}
+
+.header-content{
+  padding-top: 15px;
+  padding-right: 40px;
+}

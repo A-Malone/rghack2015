@@ -1,11 +1,12 @@
 import pprint
 import json
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
 from django.core.urlresolvers import reverse
+from django.contrib.auth.decorators import login_required
 
 from models import Tournament, Match, Notification, Team, Summoner
 
@@ -14,9 +15,13 @@ from .forms import TournamentForm, TeamForm
 from lib import challonge_api
 
 
-# Create your views here.
 def index(request):
-    return HttpResponse("hello rghack2015")
+    return render_to_response('index.html')
+
+def list(request):
+    data = Tournament.objects.all()
+    pprint.pprint(data)
+    return render(request, "tournament/list.html", {"data": data})
 
 @csrf_exempt
 def notification(request):
