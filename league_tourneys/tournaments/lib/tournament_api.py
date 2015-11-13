@@ -49,8 +49,9 @@ def summoner_name_to_id(name):
     standardized_name = name.lower().replace(" ", "")
     r = requests.get(summoner_by_name_base.format(standardized_name), headers=header)
     # Summoner not found
-    if r.status_code == '404':
+    if int(r.status_code) == 404:
         return -1
+    print(r.status_code)
     return r.json()[standardized_name]['id']
 
 '''Gets the lobby events for a specific tounament code'''

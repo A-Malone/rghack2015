@@ -42,7 +42,7 @@ def create_tournament(request):
         # check whether it"s valid:
         if form.is_valid():            
             tournament = Tournament(name=form.cleaned_data["name"])            
-            tournament.setup(dat)
+            tournament.setup(form.cleaned_data)
             tournament.save()
             return render(request, "tournament/detail.html", {"tournament": tournament})
     
@@ -57,19 +57,19 @@ class MatchDetailView(generic.DetailView):
 
 # TEAMS CONTROLLER
 def create_team(request, tournament_id):
-    tournament = Tournament.objects.get(pk=tournament_id)
+    tournament = Tournament.objects.get(pk=int(tournament_id))
     # if this is a POST request we need to process the form data
     if request.method == "POST":
         # create a form instance and populate it with data from the request:
         form = TeamForm(request.POST)
         # check whether it"s valid:
         if form.is_valid():
-            print(type(form.cleaned_data["name"]))
-            team = tournament.team_set.create(name=form.cleaned_data["name"].encode('utf-8'))
-            
-            for player_name in form.cleaned_data["members"]:
-                summoner = Summoner.objects.get_or_create(summoner_name=player_name)
-                team.summoner_set.add(summoner)
+            team = Team.create(form.cleaned_data["name"], tournament)
+
+            for player_name in form.cleaned_data["members"].split(","):
+
+                summoner = Summoner.find_or_create(player_name)
+                team.summoners.add(summoner)
                         
             return render(request, "team/detail.html", {"team": team})
     
