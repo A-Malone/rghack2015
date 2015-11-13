@@ -56,9 +56,14 @@ def notification(request):
     return HttpResponse('only POST requests pls rito')
 
 # TOURNAMENT CONTROLLER
-class TournamentDetailView(generic.DetailView):
-    model = Tournament
-    template_name = "tournament/detail.html"
+def tournament_detail_view(request, tournament_id):
+    tournament = Tournament.objects.get(pk=int(tournament_id))
+
+    match_map = {}
+    for match in tournament.match_set.all():
+        match_map[match.challonge_match_id] = match.pk
+
+    return render(request, "tournament/detail.html", {"tournament": tournament, "match_map":match_map})
 
 def start_tournament(request, tournament_id):
     tournament = Tournament.objects.get(pk=int(tournament_id))
@@ -66,8 +71,7 @@ def start_tournament(request, tournament_id):
     if request.method == "POST":
         challonge_api.start_tournament(tournament.challonge_tournament_id)
 
-        p = challonge_api.get_match_list(tournament.challonge_tournament_id, state="open")
-        print(p)
+        p = challonge_api.get_match_list(tournament.challonge_tournament_id, state="open")        
 
         for match_json in p:
             challonge_match_id = match_json["match"]["id"]
