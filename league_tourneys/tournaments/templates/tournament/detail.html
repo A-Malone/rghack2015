@@ -47,7 +47,7 @@
               $('#thebooty').append('<style scoped>');
               $('#thebooty>style').load("/static/css/challonge_stylesheet.css");
             }
-          $.get("//alloworigin.com/get?url=http://challonge.com/" + url + "/module", success);
+          $.get("//alloworigin.com/get?url=http://challonge.com/" + url + "/module?theme=2&show_final_results=1&show_standings=1", success);
       }
 
       get_tournament_bracket('{{ tournament.challonge_tournament_url }}');
