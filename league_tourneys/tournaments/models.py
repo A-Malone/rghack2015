@@ -63,6 +63,7 @@ class Team(models.Model):
 
         p = challonge_api.create_participant(tournament.challonge_tournament_id, {'name':name, 'misc':int(team.pk)})
         team.challonge_team_id = p["participant"]["id"]
+        team.save()
 
         return team
         
