@@ -1,7 +1,7 @@
 import pprint
 import json
 
-from django.shortcuts import render
+from django.shortcuts import render, render_to_response
 from django.http import HttpResponse
 from django.views import generic
 from django.views.decorators.csrf import csrf_exempt
@@ -14,7 +14,7 @@ from .forms import TournamentForm, TeamForm
 
 
 def index(request):
-    return HttpResponse('hello rghack2015')
+    return render_to_response('index.html')
 
 def list(request):
     data = Tournament.objects.all()
