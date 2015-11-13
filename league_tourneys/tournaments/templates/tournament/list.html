@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div id="title">Tournaments</div>
+<table>
+    <tr>
+        <th>Name</th>
+        <th># Teams</th>
+        <th>Status</th>
+    </tr>
+    {% for item in data %}
+    <tr> 
+      <td>{{ item.name }}
+      </td>
+      <td>todo
+      </td>
+      <td>open/closed
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endblock %}
+

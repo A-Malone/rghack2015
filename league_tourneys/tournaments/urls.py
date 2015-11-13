@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^create/$', views.create_tournament, name='create_tournament'),
     url(r'^(?P<tournament_id>[0-9]+)/add_team/$', views.create_team, name='create_team'),
     url(r'^/notification', views.notification, name='notification'),
+    url(r'^list', views.list, name='list'),
 ]
