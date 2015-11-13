@@ -1,6 +1,7 @@
 import pprint
 import json
 import random
+import string
 
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse
@@ -35,6 +36,9 @@ def notification(request):
             
             short_code = data['shortCode']
             match = Match.objects.get(tournament_api_match_id=short_code)
+            match.completed = True
+            match.league_match_id = data["gameId"]
+            match.save()
 
             teams = match.teams.all()
 
@@ -46,9 +50,11 @@ def notification(request):
                 winning_team = teams[1]
                 losing_team = teams[0]
 
-            challonge_match_id = match.challonge_match_id
-            swap = winning_team.pk != match.first_team_id
-            match_results = {"scores_csv":"1-0" if swap else "0-1", "winner_id": winning_team.challonge_team_id}
+            p = challonge_api.get_match_info(match.tournament.challonge_tournament_id, match.challonge_match_id)
+            player1 = p["match"]["player1_id"]
+            
+            no_swap = winning_team.challonge_team_id == player1
+            match_results = {"scores_csv":"1-0" if no_swap else "0-1", "winner_id": winning_team.challonge_team_id}
             challonge_api.update_match(match.tournament.challonge_tournament_id, match.challonge_match_id, match_results)
 
             # Update the rest of the matches
@@ -102,7 +108,11 @@ def match_detail_view(request, tournament_id, match_id):
     teams = match.teams.all()   
 
     context = {'match':match, 'team1':teams.first(),'team2':teams.last(), 'players1':teams.first().summoners.all(), 'players2':teams.last().summoners.all()}
-    return render(request, "match/detail.html", context)
+    
+    if(match.completed):
+        return render(request, "match/postmatch.html", context)
+    else:        
+        return render(request, "match/detail.html", context)
  
 
 # TEAMS CONTROLLER

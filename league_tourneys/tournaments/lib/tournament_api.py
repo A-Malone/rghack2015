@@ -12,7 +12,7 @@ code_url_base       = url_base.format('/tournament/public/v1/code')
 t_match_url_base    = na_url_base.format('/api/lol/na/v2.2/match/by-tournament/{0}/ids?')
 match_info_url_base = na_url_base.format('/api/lol/na/v2.2/match/for-tournament/{0}')
 summoner_by_name_base = url_base.format('/api/lol/NA/v1.4/summoner/by-name/{0}')
-summoner_league_base = url_base.format("/api/lol/NA/v2.5/league/by-summoner/{0}")
+summoner_league_base = na_url_base.format("/api/lol/na/v2.5/league/by-summoner/{0}")
 lobby_events_base   = url_base.format('/tournament/public/v1/lobby/events/by-code/{0}')
 
 header = {'X-Riot-Token': key, 'Content-Type': 'application/json'}
@@ -132,8 +132,10 @@ def get_summoner_info(name):
     r.raise_for_status()
     return r.json()[standardized_name]
 
-def get_summoner_league(summoner_id):
-    r = requests.get(summoner_league.format(summoner_id), headers=header)
+def get_summoner_league(summoner_id):        
+    r = requests.get(summoner_league_base.format(summoner_id), headers=header_no_token, params={'api_key': key})    
+    print(r.url)
+    print(r.text)
     r.raise_for_status()
     return r.json()[str(summoner_id)];
     

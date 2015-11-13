@@ -30,7 +30,7 @@ class Tournament(models.Model):
     def start(self):
         challonge_api.start_tournament(self.challonge_tournament_id)        
         self.started=True
-        tournament.update_available_matches()
+        self.update_available_matches()
         self.save()
 
     def update_available_matches(self):
@@ -66,10 +66,13 @@ class Summoner(models.Model):
         p = tournament_api.get_summoner_info(name)
         icon = int(p["profileIconId"])
         
-        p = tournament_api.get_summoner_league(summoner_id)
-        league = p[0]["tier"]
+        try:
+            p = tournament_api.get_summoner_league(summoner_id)
+            league = p[0]["tier"]
+        except:
+            league = "Unranked"
 
-        summoner = Summoner(summoner_name=name, summoner_id=summoner_id, region_id=0, league=league, icon=icon)
+        summoner = Summoner(summoner_name=name, summoner_id=summoner_id, region_id=0, league=league, summoner_icon=icon)
         summoner.save()
         return summoner
     
@@ -102,9 +105,11 @@ class Match(models.Model):
     tournament_api_match_id     = models.CharField(max_length=30)
     challonge_match_id          = models.IntegerField(default=-1)
     first_team_id               = models.IntegerField(default=-1)   #First team in challonge
+    completed                   = models.BooleanField(default=False)
+    league_match_id             = models.IntegerField(default=-1)
     # Relationships
     teams                       = models.ManyToManyField(Team)
-    tournament                  = models.ForeignKey(Tournament)
+    tournament                  = models.ForeignKey(Tournament)    
 
     @classmethod
     def create(cls, tournament, challonge_match_id, team_1, team_2):
