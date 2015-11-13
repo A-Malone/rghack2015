@@ -20,7 +20,7 @@ header_no_token = {'Content-Type': 'application/json'}
 def register_new_provider():
     json_data = {'region': 'NA', 'url': host}
     r = requests.post(provider_url_base, headers=header, json=json_data)
-
+    r.raise_for_status()
     return r.text
 
 provider_id = register_new_provider()
@@ -28,7 +28,7 @@ provider_id = register_new_provider()
 def create_tournament(name):
     json_data = {'name': name, 'providerId': provider_id}
     r = requests.post(tournament_url_base, headers=header, json=json_data)
-
+    r.raise_for_status()
     return r.text
 
 def create_match(tournament_id, num_matches=1, allowed_ids=None, metadata=''):
@@ -45,6 +45,7 @@ def create_match(tournament_id, num_matches=1, allowed_ids=None, metadata=''):
         json_data['allowedSummonerIds'] = {'participants': allowed_ids}
     r = requests.post(code_url_base, headers=header, params=params,
             json=json_data)
+    r.raise_for_status()
     return r.json()[0]
 
 '''Returns summoner name to id. If name does not exist, returns -1'''
@@ -52,14 +53,13 @@ def summoner_name_to_id(name):
     # Standardized Summoner Name is all lowercase with spaces removed
     standardized_name = name.lower().replace(" ", "")
     r = requests.get(summoner_by_name_base.format(standardized_name), headers=header)
-    # Summoner not found
-    if int(r.status_code) == 404:
-        return -1
+    r.raise_for_status()
     return r.json()[standardized_name]['id']
 
 '''Gets the lobby events for a specific tounament code'''
 def get_lobby_events(tournament_code):
     r = requests.get(lobby_events_base.format(tournament_code), headers=header)
+    r.raise_for_status()
     return r.json()
 
 def get_teams(tournament_code):
@@ -111,8 +111,8 @@ def get_teams(tournament_code):
 def get_match_id(tournament_code):
     url = t_match_url_base.format(tournament_code)
     r = requests.get(url, headers=header_no_token, params={'api_key': key})
-    match_id = r.json()[0]
-    return match_id
+    r.raise_for_status()
+    return r.json()[0]
 
 def get_match_info(tournament_code):
     match_id = get_match_id(tournament_code)
@@ -120,8 +120,8 @@ def get_match_info(tournament_code):
     params = {'api_key': key, 'tournamentCode': tournament_code}
     url = match_info_url_base.format(match_id)
     r = requests.get(url, params=params)
-    match_info = r.json()
-    return match_info
+    r.raise_for_status()
+    return r.json()
 
 def main():
     # Sample going from beginning to end
