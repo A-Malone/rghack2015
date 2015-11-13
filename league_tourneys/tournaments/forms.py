@@ -5,7 +5,8 @@ class TournamentForm(forms.Form):
     tournament_type     = forms.MultipleChoiceField(choices=(
                             ('single elimination', 'Single Elimination'),
                             ('double elimination', 'Double Elimination'),
-                            ('round robin', 'Round Robin')
+                            ('round robin', 'Round Robin'),
+                            ('swiss', 'Swiss')
                         ))
     description         = forms.CharField(widget=forms.Textarea, required=False)
     signup_cap          = forms.IntegerField(min_value=0, required=False)
