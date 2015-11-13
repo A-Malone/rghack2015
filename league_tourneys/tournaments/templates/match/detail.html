@@ -1,0 +1,170 @@
+<style>
+.vertical-align {
+    display: flex;
+    flex-direction: column;
+}
+
+.vertical-align>* {
+    display: flex;
+    justify-content: center;
+}
+
+.selectable {
+    background-color: grey;
+    padding: 5px;
+}
+
+.column {
+    margin: 5ex;
+    padding: 2ex;
+    border-style: solid;
+    border-width: 1px;
+    flex-grow: 1;
+}
+
+.column-left {
+    text-align: right;
+}
+
+.column-right {
+    text-align: left;
+}
+
+.player {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 2px;
+}
+
+.column-left .player {
+    flex-direction: row-reverse;
+}
+
+.column-right .player {
+    flex-direction: row;
+}
+
+.player-name {
+    align-items: center;
+}
+
+.column-left .player-name {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+.column-right .player-name {
+    display: flex;
+    flex-direction: row;
+}
+
+.summoner-icon {
+    display: inline-block;
+    background-size: contain;
+    width: 40px;
+    height: 40px;
+}
+
+.division {
+    text-align: left;
+}
+</style>
+<script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+<div class="vertical-align">
+    <div>
+        <h1>{{ match.name }}</h1>
+    </div>
+    <div>
+        <h2>Tournament Code: <span class="selectable">{{ match.tournament_code }}</span></h2>
+    </div>
+    <div>
+        <div class="column column-left">
+            <h3>Blue Team {{ team1.name }}</h3>
+            <div class="player">
+                <div class="player-name">
+                    <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/588.png ');" class="summoner-icon"> </div>
+                    <span>{{ team1.member[i] }}</span>
+                </div>
+                <span class="division">Challenjour</span>
+            </div>
+            <div class="player">
+                <div class="player-name">
+                    <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/588.png ');" class="summoner-icon"> </div>
+                    <span>{{ team1.member[i] }}</span>
+                </div>
+                <span class="division">Challenjour</span>
+            </div>
+            <div class="player">
+                <div class="player-name">
+                    <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/588.png ');" class="summoner-icon"> </div>
+                    <span>{{ team1.member[i] }}</span>
+                </div>
+                <span class="division">Challenjour</span>
+            </div>
+            <div class="player">
+                <div class="player-name">
+                    <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/588.png ');" class="summoner-icon"> </div>
+                    <span>{{ team1.member[i] }}</span>
+                </div>
+                <span class="division">Challenjour</span>
+            </div>
+            <div class="player">
+                <div class="player-name">
+                    <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/588.png ');" class="summoner-icon"> </div>
+                    <span>{{ team1.member[i] }}</span>
+                </div>
+                <span class="division">Challenjour</span>
+            </div>
+        </div>
+        <div class="column column-right">
+            <h3>{{ team2.name }} Purple Team</h3>
+            <div class="player">
+                <div class="player-name">
+                    <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/588.png ');" class="summoner-icon"> </div>
+                    <span>{{ team1.member[i] }}</span>
+                </div>
+                <span class="division">Challenged</span>
+            </div>
+            <div class="player">
+                <div class="player-name">
+                    <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/588.png ');" class="summoner-icon"> </div>
+                    <span>{{ team1.member[i] }}</span>
+                </div>
+                <span class="division">Challenged</span>
+            </div>
+            <div class="player">
+                <div class="player-name">
+                    <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/588.png ');" class="summoner-icon"> </div>
+                    <span>{{ team1.member[i] }}</span>
+                </div>
+                <span class="division">Challenged</span>
+            </div>
+            <div class="player">
+                <div class="player-name">
+                    <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/588.png ');" class="summoner-icon"> </div>
+                    <span>{{ team1.member[i] }}</span>
+                </div>
+                <span class="division">Challenged</span>
+            </div>
+            <div class="player">
+                <div class="player-name">
+                    <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/588.png ');" class="summoner-icon"> </div>
+                    <span>{{ team1.member[i] }}</span>
+                </div>
+                <span class="division">Challenged</span>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+// Allows .selectable elements to be selected in a single click.
+// http://keestalkstech.com/2014/04/click-to-select-all-on-the-pre-element/
+$('.selectable').click(function() {
+    if (window.getSelection) {
+        var range = document.createRange();
+        range.selectNodeContents(this);
+        window.getSelection().addRange(range);
+    }
+});
+</script>
