@@ -88,7 +88,7 @@
             {% for player in players1 %}
             <div class="player">
                 <div class="player-name">
-                    <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/588.png ');" class="summoner-icon"> </div>
+                    <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/{{ player.summoner_icon }}.png ');" class="summoner-icon"> </div>
                     <span>{{ player.summoner_name }}</span>
                 </div>
                 <span class="division">Challenjour</span>
@@ -100,7 +100,7 @@
             {% for player in players2 %}
             <div class="player">
                 <div class="player-name">
-                    <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/588.png ');" class="summoner-icon"> </div>
+                    <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/{{ player.summoner_icon }}.png ');" class="summoner-icon"> </div>
                     <span>{{ player.summoner_name }}</span>
                 </div>
                 <span class="division">Challenged</span>
