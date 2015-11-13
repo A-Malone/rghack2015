@@ -10,7 +10,6 @@
     <thead>
       <tr>
 	<th>NAME</th>
-	<th># TEAMS</th>
 	<th>STATUS</th>
       </tr>
     </thead>
@@ -19,12 +18,12 @@
       <td><a href="{{ item.id }}"></a>{{ item.name }}
       </td>
       <td>{{item.number_of_teams}}
-      </td>
+      </td>     
       <td>
-      {% if item.started %}
-      Started
+      {% if item.started  %}
+      CLOSED
       {% else %}
-      Open
+      OPEN
       {% endif %}
       </td>
     </tr>
