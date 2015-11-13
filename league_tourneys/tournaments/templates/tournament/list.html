@@ -10,7 +10,6 @@
     <thead>
       <tr>
 	<th>NAME</th>
-	<th># TEAMS</th>
 	<th>STATUS</th>
       </tr>
     </thead>
@@ -18,9 +17,12 @@
     <tr> 
       <td><a href="{{ item.id }}"></a>{{ item.name }}
       </td>
-      <td>todo
-      </td>
-      <td>open/closed
+      <td>
+      {% if item.started  %}
+      CLOSED
+      {% else %}
+      OPEN
+      {% endif %}
       </td>
     </tr>
     {% endfor %}
