@@ -31,11 +31,10 @@ def create_tournament(name):
 
     return r.text
 
-def create_match(tournament_id, num_matches=1, allowed_names=None, metadata=''):
+def create_match(tournament_id, num_matches=1, allowed_ids=None, metadata=''):
     allowed_ids = []
-    for name in allowed_names:
-        allowed_ids.append(summoner_name_to_id(name))
-    print allowed_ids
+    for anId in allowed_ids:
+        allowed_ids.append(anId)
 
     params = {'tournamentId': tournament_id, 'count': num_matches}
     json_data = {
@@ -59,7 +58,6 @@ def summoner_name_to_id(name):
     # Summoner not found
     if int(r.status_code) == 404:
         return -1
-    print(r.status_code)
     return r.json()[standardized_name]['id']
 
 '''Gets the lobby events for a specific tounament code'''
