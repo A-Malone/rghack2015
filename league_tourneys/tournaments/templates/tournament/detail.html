@@ -11,14 +11,14 @@
   <div style="display: inline-block;">
       <form action="{% url 'start_tournament' tournament.pk %}" method="post">
 	  {% csrf_token %}
-	  <button type="submit" name="your_name" value="your_value">Start Tournament</button>
+	  <button type="submit" class="btn btn-main btn-default" name="your_name" value="your_value">Start Tournament</button>
       </form>
   </div>
 
   <div style="display: inline-block;">
       <form action="{% url 'create_team' tournament.pk %}" method="get">
 	  {% csrf_token %}
-	  <button type="submit" name="your_name" value="your_value">Register a Team</button>
+	  <button type="submit" class="btn btn-main btn-default" name="your_name" value="your_value">Register a Team</button>
       </form>
   </div>
 

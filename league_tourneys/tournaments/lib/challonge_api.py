@@ -7,41 +7,41 @@ api_key = keys['challonge_api_key']
 def create_tournament(tournament={}):
 	data = {'api_key':api_key, 'tournament':tournament}
 	r = requests.post('https://challonge.com/api/tournaments.json', json=data)
-    r.raise_for_status()
+        r.raise_for_status()
 	return r.json()
 
 '''http://api.challonge.com/v1/documents/tournaments/show'''
 def show_tournament(tournament_id):
 	data = {'api_key':api_key}
 	r = requests.get('https://api.challonge.com/v1/tournaments/{}.json'.format(tournament_id), params=data)
-    r.raise_for_status()
+        r.raise_for_status()
 	return r.json()
 
 '''http://api.challonge.com/v1/documents/participants/create'''
 def create_participant(tournament_id, participant={}):
 	data = {'api_key':api_key, 'participant':participant}
 	r = requests.post('https://api.challonge.com/v1/tournaments/{}/participants.json'.format(tournament_id), json=data)
-    r.raise_for_status()
+        r.raise_for_status()
 	return r.json()
 
 '''http://api.challonge.com/v1/documents/participants/randomize'''
 def randomize_seeds(tournament_id):
 	data = {'api_key':api_key}
 	r = requests.post('https://api.challonge.com/v1/tournaments/{}/participants/randomize.json'.format(tournament_id), json=data)
-    r.raise_for_status()
+        r.raise_for_status()
 	return r.json()
 
 '''http://api.challonge.com/v1/documents/tournaments/start'''
 def start_tournament(tournament_id, include_participants=False, include_matches=False):
 	data = {'api_key':api_key, 'include_participants':int(include_participants), 'include_matches':int(include_matches)}
 	r = requests.post('https://api.challonge.com/v1/tournaments/{}/start.json'.format(tournament_id), json=data)
-    r.raise_for_status()
+        r.raise_for_status()
 	return r.json()
 
 def finalize_tournament(tournament_id):
 	data = {'api_key':api_key}
 	r = requests.post('https://api.challonge.com/v1/tournaments/{}/finalize.json'.format(tournament_id), json=data)
-    r.raise_for_status()
+        r.raise_for_status()
 	return r.json()
 
 '''http://api.challonge.com/v1/documents/matches/index'''
@@ -50,21 +50,21 @@ def get_match_list(tournament_id, state="all", participant_id=None):
 	if participant_id is not None:
 		data['participant_id'] = participant_id
 	r = requests.get('https://api.challonge.com/v1/tournaments/{}/matches.json'.format(tournament_id), params=data)
-    r.raise_for_status()
+        r.raise_for_status()
 	return r.json()
 
 '''http://api.challonge.com/v1/documents/match_attachments/create'''
 def create_match_attachment(tournament_id, match_id, match_attachment={}):
 	data = {'api_key':api_key, 'match_attachment':match_attachment}
 	r = requests.post('https://api.challonge.com/v1/tournaments/{}/matches/{}/attachments.json'.format(tournament_id, match_id), json=data)
-    r.raise_for_status()
+        r.raise_for_status()
 	return r.json()
 
 '''http://api.challonge.com/v1/documents/matches/update'''
 def update_match(tournament_id, match_id, match={}):
 	data = {'api_key':api_key, 'match':match}
 	r = requests.put('https://api.challonge.com/v1/tournaments/{}/matches/{}.json'.format(tournament_id, match_id), json=data)
-    r.raise_for_status()
+        r.raise_for_status()
 
 def main():		
 	# Create tournament
