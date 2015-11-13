@@ -110,7 +110,7 @@ class Team(models.Model):
         return "Team: {}".format(self.name)
     
 class Match(models.Model):
-    tournament_api_match_id     = models.CharField(max_length=30)
+    tournament_api_match_id     = models.CharField(max_length=50)
     challonge_match_id          = models.IntegerField(default=-1)
     first_team_id               = models.IntegerField(default=-1)   #First team in challonge
     completed                   = models.BooleanField(default=False)
