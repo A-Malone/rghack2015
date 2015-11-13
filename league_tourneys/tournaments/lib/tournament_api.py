@@ -32,22 +32,19 @@ def create_tournament(name):
     return r.text
 
 def create_match(tournament_id, num_matches=1, allowed_ids=None, metadata=''):
-    allowed_ids = []
-    for anId in allowed_ids:
-        allowed_ids.append(anId)
-
     params = {'tournamentId': tournament_id, 'count': num_matches}
     json_data = {
-            'teamSize': len(allowed_ids)/2,
-            'allowedSummonerIds': {'participants': allowed_ids},
-            'spectatorType': 'ALL',
-            'pickType': 'TOURNAMENT_DRAFT',
-            'mapType': 'SUMMONERS_RIFT',
-            'metadata': metadata
-            }
+        'teamSize': 5,
+        'spectatorType': 'ALL',
+        'pickType': 'TOURNAMENT_DRAFT',
+        'mapType': 'SUMMONERS_RIFT',
+        'metadata': metadata
+        }
+    if allowed_ids is not None:
+        json_data['teamSize'] = len(allowed_ids)/2
+        json_data['allowedSummonerIds'] = {'participants': allowed_ids}
     r = requests.post(code_url_base, headers=header, params=params,
             json=json_data)
-
     return r.json()[0]
 
 '''Returns summoner name to id. If name does not exist, returns -1'''
@@ -132,14 +129,15 @@ def main():
     #t_id = create_tournament('test-tourney', new_p_id)
 
     # just for now
-    t_id = 1795
-    m_id = 'NA0416f-9b623988-bf60-4a3c-a832-1ce1d0427a65'
-    m_id = create_match(t_id, 1, allowed_names=['Tweeks', 'Teh Crust'])
-    print(m_id)
+    # t_id = 1795
+    # m_id = 'NA0416f-9b623988-bf60-4a3c-a832-1ce1d0427a65'
+    # m_id = create_match(t_id, 1, allowed_names=['Tweeks', 'Teh Crust'])
+    # print(m_id)
 
-    summoner_name_to_id('ShadowLight2143')
+    # summoner_name_to_id('ShadowLight2143')
 
-    get_teams(m_id)
+    # get_teams(m_id)
+    pass
 
 if __name__ == '__main__':
     main()
