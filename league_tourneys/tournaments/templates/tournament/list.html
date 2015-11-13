@@ -1,16 +1,22 @@
 {% extends "base.html" %}
-
+{% load staticfiles %}
+{% block scope_includes %}
+  <script src="{% static 'js/list.js' %}"></script>
+{% endblock %}
 {% block content %}
-<div id="title">Tournaments</div>
-<table>
-    <tr>
-        <th>Name</th>
-        <th># Teams</th>
-        <th>Status</th>
-    </tr>
+<div id="title"><h2 class="app-title">TOURNAMENTS<h2></div>
+<div class="jumbotron">
+  <table class="table table-hover">
+    <thead>
+      <tr>
+	<th>NAME</th>
+	<th># TEAMS</th>
+	<th>STATUS</th>
+      </tr>
+    </thead>
     {% for item in data %}
     <tr> 
-      <td>{{ item.name }}
+      <td><a href="{{ item.id }}"></a>{{ item.name }}
       </td>
       <td>todo
       </td>
@@ -19,5 +25,6 @@
     </tr>
     {% endfor %}
   </table>
-  {% endblock %}
+</div>
+{% endblock %}
 
