@@ -1,3 +1,4 @@
+import datetime as dt
 import tournament_api as r_api
 
 def register_new_provider(provider_account):
@@ -27,6 +28,13 @@ def get_team_info(tournament_code, team_id=100):
     info = get_match_info(tournament_code)
     if team_id == get_winner_id(info):
         team_info['winner'] = True
+
+    team = info['teams'][0] if info['teams'][0]['teamId'] == team_id else info['teams'][1]
+
+    team_info['tower_kills'] = team['towerKills']
+    team_info['baron_kills'] = team['baronKills']
+    team_info['dragon_kills'] = team['dragonKills']
+    team_info['gold'] = 0
 
     participants = info['participants']
     participants_id = info['participantIdentities']
@@ -59,9 +67,24 @@ def get_team_info(tournament_code, team_id=100):
                 'gold'      : stats['goldEarned']
 
         }
+        team_info['gold'] += stats['goldEarned']
         player_info_list.append(player_info)
 
     team_info['player_info'] = player_info_list
     return team_info
 
-def get_game_info(tournament_code
+def get_game_times(tournament_code):
+    info = get_match_info(tournament_code)
+    game_info = {}
+
+    # division because the API call gives timestamp in milliseconds
+    dt_obj = dt.datetime.fromtimestamp(info['matchCreation']/1000)
+    dt_str = '{0}/{1}/{2} - {3}:{4}'.format(dt_obj.day, dt_obj.month,
+            dt_obj.year, dt_obj.hour, dt_obj.minute)
+
+    game_info['date'] = dt_str
+    game_info['duration'] = str(dt.timedelta(seconds=info['matchDuration']))
+    if game_info['duration'][0] == '0':
+        game_info['duration'] = game_info['duration'].split(':', 1)[1]
+
+    return game_info
