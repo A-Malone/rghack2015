@@ -13,6 +13,7 @@ class Tournament(models.Model):
     league_tournament_id        = models.IntegerField()
     challonge_tournament_id     = models.IntegerField(null=True)
     challonge_tournament_url    = models.CharField(max_length=200, null=True)
+    started                     = models.BooleanField(default=False)
 
     def setup(self, challonge_settings):
         # Setup with challonge
@@ -24,6 +25,13 @@ class Tournament(models.Model):
         
         # Setup with league
         self.league_tournament_id = tournament_api.create_tournament(self.name)
+
+
+    def start(self):
+        challonge_api.start_tournament(self.challonge_tournament_id)        
+        self.started=True
+        tournament.update_available_matches()
+        self.save()
 
     def update_available_matches(self):
         p = challonge_api.get_match_list(self.challonge_tournament_id, state="open")
