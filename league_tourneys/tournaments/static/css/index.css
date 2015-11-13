@@ -10,6 +10,13 @@
   min-height: 80%;
 }
 
+body {
+    background-image:    url(/static/img/index_bg.png);
+    background-size:     cover;                      /* <------ */
+    background-repeat:   no-repeat;
+    background-position: center center; 
+}
+
 .height-full {
   height: 100vh;
 }
@@ -63,3 +70,8 @@
 .app-title{
   padding-left: 20px;
   }
+
+.create-form input, select, textarea{
+  background-color: black;
+  color: white;
+}
