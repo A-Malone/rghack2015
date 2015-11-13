@@ -11,14 +11,18 @@
   <div style="display: inline-block;">
       <form action="{% url 'start_tournament' tournament.pk %}" method="post">
 	  {% csrf_token %}
-	  <button type="submit" class="btn btn-main btn-default" name="your_name" value="your_value">Start Tournament</button>
+	  {% if tournament.started %}
+    <button type="submit" class="btn btn-main btn-default btn-disabled" name="your_name" value="your_value" disabled>Start Tournament</button>
+    {% else %}
+    <button type="submit" class="btn btn-main btn-default" name="your_name" value="your_value">Start Tournament</button>
+    {% endif %}
       </form>
   </div>
 
   <div style="display: inline-block;">
     <form action="{% url 'create_team' tournament.pk %}" method="get">
 	  {% csrf_token %}
-    {% if tounament.started %}
+    {% if tournament.started %}
 	  <button type="submit" class="btn btn-main btn-default btn-disabled" name="your_name" value="your_value" disabled>Register a Team</button>
     {% else %}
     <button type="submit" class="btn btn-main btn-default" name="your_name" value="your_value">Register a Team</button>

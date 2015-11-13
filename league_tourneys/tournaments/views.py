@@ -23,6 +23,10 @@ def index(request):
 def list(request):
     data = Tournament.objects.all()
     pprint.pprint(data)
+
+    for t in data:
+        t.calculate_num_teams()
+
     return render(request, "tournament/list.html", {"data": data})
 
 @csrf_exempt
