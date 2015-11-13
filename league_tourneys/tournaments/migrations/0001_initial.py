@@ -14,7 +14,15 @@ class Migration(migrations.Migration):
             name='Match',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('lol_match_id', models.IntegerField()),
+                ('tournament_api_match_id', models.IntegerField()),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Notification',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('tournament_code', models.TextField(default=b'')),
+                ('json_text', models.TextField()),
             ],
         ),
         migrations.CreateModel(
@@ -40,13 +48,14 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=200)),
-                ('challonge_tournament_id', models.IntegerField()),
                 ('league_tournament_id', models.IntegerField()),
+                ('challonge_tournament_id', models.IntegerField(null=True)),
+                ('challonge_tournament_url', models.CharField(max_length=200, null=True)),
             ],
         ),
         migrations.AddField(
             model_name='team',
-            name='tounament',
+            name='tournament',
             field=models.ForeignKey(to='tournaments.Tournament'),
         ),
         migrations.AddField(
@@ -56,7 +65,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='match',
-            name='tounament',
+            name='tournament',
             field=models.ForeignKey(to='tournaments.Tournament'),
         ),
     ]
