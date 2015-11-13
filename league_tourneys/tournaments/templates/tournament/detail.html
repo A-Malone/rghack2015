@@ -1,42 +1,44 @@
 {% extends "base.html" %}
+{% load staticfiles %}
 
-{% block content %}
-
-<h1>{{ tournament.name }}</h1>
-<div style="display: inline-block;">
-    <form action="{% url 'start_tournament' tournament.pk %}" method="post">
-        {% csrf_token %}
-        <button type="submit" name="your_name" value="your_value">Start Tournament</button>
-    </form>
-</div>
-
-<div style="display: inline-block;">
-    <form action="{% url 'create_team' tournament.pk %}" method="get">
-        {% csrf_token %}
-        <button type="submit" name="your_name" value="your_value">Register a Team</button>
-    </form>
-</div>
-
-<div id="thebooty"></div>
-
-<script src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
-<script type="text/javascript">
-var get_tournament_bracket = function(url) {
-    var success = function(data) {
-        var html = $.parseHTML(data.contents);
-        console.log(html);
-        $('#thebooty').append(html);
-
-        // Get the matches
-        $('table.match_table:not(:has(.blank_id)) td.core').each(function(index, elem) {
-            var children = $(this).children().detach();
-            var $a = $('<a>').attr('href', '#').append(children);
-            $(this).append($a);
-        });
-    }
-    $.get("//alloworigin.com/get?url=http://challonge.com/" + url + "/module", success);
-}
-
-get_tournament_bracket('{{ tournament.challonge_tournament_url }}');
+{% block scoped_includes %}
+  <script src="{% static 'js/list.js' %}"></script>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js" type="text/javascript"></script>
+  <script type="text/javascript">
+  var get_tournament_bracket = function(url) {
+      var success = function(data) {
+	  var html = $.parseHTML(data.contents);
+	  console.log(html);
+	  $('#thebooty').append(html);
+	  // Get the matches
+	  $('table.match_table:not(:has(.blank_id)) td.core').each(function(index, elem) {
+	      var children = $(this).children().detach();
+	      var $a = $('<a>').attr('href', '#').append(children);
+	      $(this).append($a);
+	  });
+      }
+      $.get("//alloworigin.com/get?url=http://challonge.com/" + url + "/module", success);
+  }
+  get_tournament_bracket('{{ tournament.challonge_tournament_url }}');
 </script>
+{% endblock %}
+{% block content %}
+<h2 class="app-title" style="text-transform: uppercase;">{{ tournament.name }}</h2>
+<div class="jumbotron">
+  <div style="display: inline-block;">
+      <form action="{% url 'start_tournament' tournament.pk %}" method="post">
+	  {% csrf_token %}
+	  <button type="submit" name="your_name" value="your_value">Start Tournament</button>
+      </form>
+  </div>
+
+  <div style="display: inline-block;">
+      <form action="{% url 'create_team' tournament.pk %}" method="get">
+	  {% csrf_token %}
+	  <button type="submit" name="your_name" value="your_value">Register a Team</button>
+      </form>
+  </div>
+
+  <div id="thebooty"></div>
+</div>
 {% endblock %}
