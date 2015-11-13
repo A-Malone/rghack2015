@@ -25,6 +25,8 @@
   <div id="thebooty"></div>
 
   <script type="text/javascript">
+  // Maps challonge_match_ids to site_map_id
+  var match_map = {{ match_map }};
   $(function(){
       var get_tournament_bracket = function(url) {
             var html;
@@ -35,7 +37,9 @@
               // Get the matches
               $('table.match_table:not(:has(.blank_id)) td.core').each(function(index, elem) {
                   var children = $(this).children().detach();
-                  var $a = $('<a>').attr('href', '#').append(children);
+                  var challonge_match_id = $(this).attr('id').split('_').slice(-2)[0];
+                  var site_match_id = match_map[challonge_match_id];
+                  var $a = $('<a>').attr('href', "{% url 'tournament' tournament.pk %}" + "matches/" + site_match_id + "/").append(children);
                   $(this).append($a);
               });
 

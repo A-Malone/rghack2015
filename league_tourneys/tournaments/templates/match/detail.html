@@ -84,8 +84,8 @@
     </div>
     <div>
         <div class="column column-left">
-            <h3>Blue Team {{ teams[0].name }}</h3>
-            {% for player in teams[0] %}
+            <h3>Blue Team {{ team1.name }}</h3>
+            {% for player in players1 %}
             <div class="player">
                 <div class="player-name">
                     <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/588.png ');" class="summoner-icon"> </div>
@@ -97,7 +97,7 @@
         </div>
         <div class="column column-right">
             <h3>{{ team2.name }} Purple Team</h3>
-            {% for player in teams[1] %}
+            {% for player in players2 %}
             <div class="player">
                 <div class="player-name">
                     <div style="background-image: url('http://ddragon.leagueoflegends.com/cdn/5.22.3/img/profileicon/588.png ');" class="summoner-icon"> </div>
