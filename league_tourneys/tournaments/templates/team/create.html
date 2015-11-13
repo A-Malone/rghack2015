@@ -1,8 +1,19 @@
 {% extends "base.html" %}
+
 {% block content %}
+<div id="title"><h2 class="app-title">CREATE A TOURNAMENT<h2></div>
+<div class="jumbotron">
 <form action="{{ action }}" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Submit" />
+    {% for field in form %}
+<fieldset class="form-group">
+  <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+    <div class="create-form">
+      {{ field }}
+    </div>
+</fieldset>
+{% endfor %}
+    <input type="submit" class="btn hover btn-default" value="Submit" />
 </form>
+</div>
 {% endblock %}
