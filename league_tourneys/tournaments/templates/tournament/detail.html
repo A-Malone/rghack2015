@@ -16,10 +16,14 @@
   </div>
 
   <div style="display: inline-block;">
-      <form action="{% url 'create_team' tournament.pk %}" method="get">
+    <form action="{% url 'create_team' tournament.pk %}" method="get">
 	  {% csrf_token %}
+    {% if tounament.started %}
 	  <button type="submit" class="btn btn-main btn-default" name="your_name" value="your_value">Register a Team</button>
-      </form>
+    {% else %}
+    <button type="submit" class="btn btn-main btn-default btn-disabled" name="your_name" value="your_value" disabled>Register a Team</button>
+    {% endif %}
+    </form>
   </div>
 
   <div id="thebooty"></div>

@@ -1,5 +1,6 @@
 import pprint
 import json
+import random
 
 from django.shortcuts import render, redirect, render_to_response
 from django.http import HttpResponse
@@ -71,8 +72,7 @@ def start_tournament(request, tournament_id):
     tournament = Tournament.objects.get(pk=int(tournament_id))
     # if this is a POST request we need to process the form data
     if request.method == "POST":
-        challonge_api.start_tournament(tournament.challonge_tournament_id)
-        tournament.update_available_matches()
+        tournament.start()        
     
     return redirect('tournament', tournament_id=tournament_id)
 
@@ -85,6 +85,7 @@ def create_tournament(request):
         # check whether it"s valid:
         if form.is_valid():
             tournament = Tournament(name=form.cleaned_data["name"])
+            form.cleaned_data['url'] = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits) for _ in range(20))
             tournament.setup(form.cleaned_data)
             tournament.save()
             return render(request, "tournament/detail.html", {"tournament": tournament})
