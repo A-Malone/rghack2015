@@ -23,7 +23,19 @@ class Tournament(models.Model):
         self.challonge_tournament_url = p["tournament"]["url"]
         
         # Setup with league
-        self.league_tournament_id = tournament_api.create_tournament(self.name)        
+        self.league_tournament_id = tournament_api.create_tournament(self.name)
+
+    def update_available_matches(self):
+        p = challonge_api.get_match_list(self.challonge_tournament_id, state="open")
+
+        for match_json in p:
+            challonge_match_id = match_json["match"]["id"]
+            player1_id = match_json["match"]["player1_id"]
+            player2_id = match_json["match"]["player2_id"]
+
+            if(not self.match_set.filter(challonge_match_id=challonge_match_id)):
+                match = Match.create(self, challonge_match_id, player1_id, player2_id)
+                self.match_set.add(match)
 
     def __repr__(self):
         return "Tournament: {}".format(self.name)

@@ -54,8 +54,10 @@ def create_match_attachment(tournament_id, match_id, match_attachment={}):
 
 '''http://api.challonge.com/v1/documents/matches/update'''
 def update_match(tournament_id, match_id, match={}):
-	data = {'match':match}
+	data = {'api_key':api_key, 'match':match}
 	r = requests.put('https://api.challonge.com/v1/tournaments/{}/matches/{}.json'.format(tournament_id, match_id), json=data)
+	print('https://api.challonge.com/v1/tournaments/{}/matches/{}.json'.format(tournament_id, match_id))	
+	print(data)
 
 def main():		
 	# Create tournament
