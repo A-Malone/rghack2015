@@ -27,17 +27,22 @@
   <script type="text/javascript">
   $(function(){
       var get_tournament_bracket = function(url) {
-          var success = function(data) {
-          var html = $.parseHTML(data.contents);
-          console.log(html);
-          $('#thebooty').append(html);
-          // Get the matches
-          $('table.match_table:not(:has(.blank_id)) td.core').each(function(index, elem) {
-              var children = $(this).children().detach();
-              var $a = $('<a>').attr('href', '#').append(children);
-              $(this).append($a);
-          });
-          }
+            var html;
+            var success = function(data) {
+              // Append the bracket
+              html = $.parseHTML(data.contents);
+              $('#thebooty').append(html).children('link,style').remove();
+              // Get the matches
+              $('table.match_table:not(:has(.blank_id)) td.core').each(function(index, elem) {
+                  var children = $(this).children().detach();
+                  var $a = $('<a>').attr('href', '#').append(children);
+                  $(this).append($a);
+              });
+              
+              // Add the styling
+              $('#thebooty').append('<style scoped>');
+              $('#thebooty>style').load('{% static \'css/challonge_stylesheet.css\'%}');
+            }
           $.get("//alloworigin.com/get?url=http://challonge.com/" + url + "/module", success);
       }
 
