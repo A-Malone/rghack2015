@@ -6,6 +6,7 @@ api_key = keys['challonge_api_key']
 '''http://api.challonge.com/v1/documents/tournaments/create'''
 def create_tournament(tournament={}):
     data = {'api_key':api_key, 'tournament':tournament}
+    print(tournament)
     r = requests.post('https://challonge.com/api/tournaments.json', json=data)
     r.raise_for_status()
     return r.json()

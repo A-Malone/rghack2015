@@ -14,10 +14,10 @@
       </tr>
     </thead>
     {% for item in data %}
-    <tr> 
+    <tr>
       <td><a href="{{ item.id }}"></a>{{ item.name }}
       </td>
-      <td>{{item.number_of_teams}}
+      <td>{{item.number_of_teams}} / {{item.num_entries}}
       </td>     
       <td>
       {% if item.started  %}
