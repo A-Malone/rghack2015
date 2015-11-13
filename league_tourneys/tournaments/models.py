@@ -48,7 +48,7 @@ class Summoner(models.Model):
         return "Summoner: {}".format(self.summoner_name)
 
 class Team(models.Model):
-    challonge_team_id           = models.IntegerField()
+    challonge_team_id           = models.IntegerField(default=-1)
     name                        = models.CharField(max_length=100)
     # Relationships
     tournament                  = models.ForeignKey(Tournament)
@@ -57,8 +57,7 @@ class Team(models.Model):
     @classmethod
     def create(cls, name, tournament):        
         team = Team(name=name)
-
-        team.challonge_team_id = -1
+        
         tournament.team_set.add(team)
 
         p = challonge_api.create_participant(tournament.challonge_tournament_id, {'name':name, 'misc':int(team.pk)})
@@ -71,31 +70,34 @@ class Team(models.Model):
         return "Team: {}".format(self.name)
     
 class Match(models.Model):
-    tournament_api_match_id     = models.IntegerField()
-    challonge_match_id          = models.IntegerField()
-    first_team_id               = models.IntegerField()         #First team in challonge
+    tournament_api_match_id     = models.IntegerField(default=-1)
+    challonge_match_id          = models.IntegerField(default=-1)
+    first_team_id               = models.IntegerField(default=-1)   #First team in challonge
     # Relationships
     teams                       = models.ManyToManyField(Team)
     tournament                  = models.ForeignKey(Tournament)
 
     @classmethod
-    def create(cls, tournament_id, challonge_match_id, team_1, team_2):
-        match = Match(challonge_match_id=challonge_match_id)                
+    def create(cls, tournament, challonge_match_id, team_1, team_2):
+        match = Match(challonge_match_id=challonge_match_id, tournament_id=tournament.pk)                
         
         # Add teams
         first_team = Team.objects.get(challonge_team_id=team_1)
         first_team_id = first_team.pk
+        match.save()
 
         match.teams.add(first_team)
-        match.teams.add(Team.objects.get(challonge_team_id=team_2))        
+        match.teams.add(Team.objects.get(challonge_team_id=team_2))
+        match.save()
 
         summ_ids = []
-        for team in match.teams:
-            for player in team:
-                summ_ids.append(player.summoner_id)
+        for team in match.teams.all():            
+            for player in team.summoners.all():
+                summ_ids.append(player.summoner_id)    
 
         # Create the match
-        match.tournament_api_match_id = int(tournament_api.create_match(tournament_id, allowed_names=summ_ids))
+        match.tournament_api_match_id = int(tournament_api.create_match(tournament.league_tournament_id, allowed_ids=summ_ids))
+        match.save()
 
         return match
     
