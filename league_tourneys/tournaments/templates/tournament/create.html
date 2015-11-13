@@ -5,7 +5,15 @@
 <div class="jumbotron">
 <form action="{{ action }}" method="post">
     {% csrf_token %}
-    {{ form.as_p }}
+    {% for field in form %}
+<fieldset class="form-group">
+  <label class="control-label" for="id_{{ field.name }}">{{ field.label }}</label>
+    <div>
+      <!-- using css to set child elements in above div to style -->
+      {{ field }}
+    </div>
+</fieldset>
+{% endfor %}
     <input type="submit" value="Submit" />
 </form>
 </div>
