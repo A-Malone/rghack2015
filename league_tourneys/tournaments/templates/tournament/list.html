@@ -18,9 +18,14 @@
     <tr> 
       <td><a href="{{ item.id }}"></a>{{ item.name }}
       </td>
-      <td>todo
+      <td>{{item.number_of_teams}}
       </td>
-      <td>open/closed
+      <td>
+      {% if item.started %}
+      Started
+      {% else %}
+      Open
+      {% endif %}
       </td>
     </tr>
     {% endfor %}

@@ -45,6 +45,9 @@ class Tournament(models.Model):
                 match = Match.create(self, challonge_match_id, player1_id, player2_id)
                 self.match_set.add(match)
 
+    def calculate_num_teams(self):
+        self.number_of_teams = len(self.team_set.all())
+
     def __repr__(self):
         return "Tournament: {}".format(self.name)
 
@@ -109,7 +112,7 @@ class Match(models.Model):
     league_match_id             = models.IntegerField(default=-1)
     # Relationships
     teams                       = models.ManyToManyField(Team)
-    tournament                  = models.ForeignKey(Tournament)    
+    tournament                  = models.ForeignKey(Tournament)
 
     @classmethod
     def create(cls, tournament, challonge_match_id, team_1, team_2):
