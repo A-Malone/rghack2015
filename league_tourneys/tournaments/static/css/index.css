@@ -65,6 +65,7 @@ body {
 .header-content{
   padding-top: 15px;
   padding-right: 40px;
+  width: 100%;
 }
 
 .app-title{
@@ -74,4 +75,19 @@ body {
 .create-form input, select, textarea{
   background-color: black;
   color: white;
+}
+
+.headerline {
+  margin-top:10px;
+}
+
+.alignleft {
+  float: left;
+}
+.alignright {
+  float: right;
+}
+
+.header-logo {
+  padding-left: 20px;
 }
