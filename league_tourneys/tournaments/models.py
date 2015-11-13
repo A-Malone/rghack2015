@@ -70,7 +70,7 @@ class Team(models.Model):
         return "Team: {}".format(self.name)
     
 class Match(models.Model):
-    tournament_api_match_id     = models.IntegerField(default=-1)
+    tournament_api_match_id     = models.CharField(max_length=30)
     challonge_match_id          = models.IntegerField(default=-1)
     first_team_id               = models.IntegerField(default=-1)   #First team in challonge
     # Relationships
@@ -96,7 +96,7 @@ class Match(models.Model):
                 summ_ids.append(player.summoner_id)    
 
         # Create the match
-        match.tournament_api_match_id = int(tournament_api.create_match(tournament.league_tournament_id, allowed_ids=summ_ids))
+        match.tournament_api_match_id = tournament_api.create_match(tournament.league_tournament_id, allowed_ids=summ_ids)
         match.save()
 
         return match
