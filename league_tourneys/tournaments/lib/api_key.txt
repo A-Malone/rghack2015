@@ -1,0 +1,4 @@
+{
+    "challonge_api_key":"[key here]",
+    "riot_games_api_key":"[key here]"
+}
